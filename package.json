@@ -1,0 +1,31 @@
+{
+  "name": "next-i18next-app-router-example",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -k \"next dev\" \"i18nexus listen -k 1TItB_TudsxTiFwjf_8nTg\"",
+    "prebuild": "i18nexus pull -k 1TItB_TudsxTiFwjf_8nTg -p app/i18n/locales",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "i18next": "^26.0.2",
+    "next": "16.2.1",
+    "next-i18next": "^16.0.4",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "react-i18next": "^17.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "babel-plugin-react-compiler": "1.0.0",
+    "concurrently": "^9.2.1",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.1",
+    "i18nexus-cli": "^4.0.0",
+    "typescript": "^5"
+  }
+}
