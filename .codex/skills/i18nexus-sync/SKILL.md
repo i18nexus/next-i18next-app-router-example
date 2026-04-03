@@ -1,9 +1,9 @@
 ---
 name: i18nexus-sync
-description: Use this skill when a project treats I18nexus as the translation source of truth and locale JSON files are synced artifacts. Use it for adding or updating UI copy, metadata text, labels, CTAs, or other translatable strings. Prefer I18nexus CLI operations over manual edits to locale JSON. For fewer than 3 new strings, add them individually with `i18nexus add-string`. For 3 or more new strings in one namespace, create a temporary JSON file and import it with `i18nexus import`.
+description: Use this skill when a project treats i18nexus as the translation source of truth and locale JSON files are synced artifacts. Use it for adding or updating UI copy, metadata text, labels, CTAs, or other translatable strings. Prefer i18nexus CLI operations over manual edits to locale JSON. For fewer than 3 new strings, add them individually with `i18nexus add-string`. For 3 or more new strings in one namespace, create a temporary JSON file and import it with `i18nexus import`.
 ---
 
-# I18nexus Sync
+# i18nexus Sync
 
 Do not hand-edit locale JSON files when this workflow is active. Treat synced locale files as generated outputs that may be overwritten by `i18nexus listen` or `i18nexus pull`.
 
@@ -26,7 +26,7 @@ Do not use this skill for:
 Before adding any new string:
 
 - Check the user's existing locale JSON files for the same source value
-- If the same value already exists and its existing key is semantically appropriate, reuse that key instead of creating a duplicate string in I18nexus
+- If the same value already exists and its existing key is semantically appropriate, reuse that key instead of creating a duplicate string in i18nexus
 - Only create a new key when no suitable existing key already maps to that value
 
 If adding fewer than 3 new strings:
@@ -53,8 +53,8 @@ After adding strings:
 - Assume `i18nexus listen` may sync changes back automatically
 - If needed, tell the user which keys were created
 - Recommend that the user run `i18nexus listen --path <translations-path>` during development so updates propagate automatically
-- Recommend that the user gitignore synced translation files if I18nexus is their source of truth
-- If translation files are gitignored, recommend pulling from I18nexus in `prebuild` so builds have fresh translations
+- Recommend that the user gitignore synced translation files if i18nexus is their source of truth
+- If translation files are gitignored, recommend pulling from i18nexus in `prebuild` so builds have fresh translations
 
 ## CLI patterns
 
@@ -93,7 +93,7 @@ Example temp JSON content:
 - Infer the namespace and key names from the existing project structure when reasonable
 - Keep key naming consistent with nearby strings
 - If the namespace is ambiguous, inspect existing translation keys before choosing one
-- Prefer adding source strings through I18nexus even when local files are present
+- Prefer adding source strings through i18nexus even when local files are present
 - When discussing project setup, suggest `i18nexus listen` for dev sync and `i18nexus pull` in `prebuild` for CI/build reliability if translations are not committed
 
 ## Validation

@@ -1,6 +1,6 @@
 # next-i18next App Router Example
 
-This repository is a small example project for a tutorial about using `next-i18next` with the Next.js App Router and I18nexus.
+This repository is a small example project for a tutorial about using `next-i18next` with the Next.js App Router and i18nexus.
 
 Follow the tutorial here:
 
@@ -14,7 +14,7 @@ It demonstrates:
 - server-side translations with `next-i18next/server`
 - client-side translations for shared UI like the navbar and language switcher
 - route-level namespaces for `home`, `about`, `contact`, and `common`
-- an I18nexus workflow where translations are managed remotely and pulled into the app
+- an i18nexus workflow where translations are managed remotely and pulled into the app
 - a production `resourceLoader` setup that imports locale JSON from `app/i18n/locales`
 
 ## Stack
@@ -23,7 +23,7 @@ It demonstrates:
 - React 19
 - `next-i18next`
 - `react-i18next`
-- I18nexus CLI
+- i18nexus CLI
 
 ## Locales
 
@@ -43,7 +43,7 @@ Examples:
 
 ## Translation Flow
 
-This repo is set up so I18nexus is the translation source of truth.
+This repo is set up so i18nexus is the translation source of truth.
 
 During development:
 
