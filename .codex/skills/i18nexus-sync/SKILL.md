@@ -1,6 +1,6 @@
 ---
 name: i18nexus-sync
-description: Use this skill when a project treats i18nexus as the translation source of truth and locale JSON files are synced artifacts. Use it for adding or updating UI copy, metadata text, labels, CTAs, or other translatable strings. Prefer i18nexus CLI operations over manual edits to locale JSON. For fewer than 3 new strings, add them individually with `i18nexus add-string`. For 3 or more new strings in one namespace, create a temporary JSON file and import it with `i18nexus import`.
+description: Use this skill when a project treats i18nexus as the translation source of truth and locale JSON files are synced artifacts. Use it for adding or updating UI copy, metadata text, labels, CTAs, or other translatable strings. Prefer i18nexus CLI operations over manual edits to locale JSON. For a single new string, use `i18nexus add-string`. For more than one new string in the same namespace, always use `i18nexus bulk-add-strings`.
 ---
 
 # i18nexus Sync
@@ -23,29 +23,35 @@ Do not use this skill for:
 
 ## Rules
 
+Before choosing commands or arguments:
+
+- Run `i18nexus project` first to inspect the project metadata
+- Use that output to confirm the library, base language, enabled languages, whether namespaces are enabled, and which namespaces exist
+- Do not assume namespaces are in use; many `next-intl` projects do not use them
+- Only pass `--namespace` when the project configuration requires it
+
 Before adding any new string:
 
 - Check the user's existing locale JSON files for the same source value
 - If the same value already exists and its existing key is semantically appropriate, reuse that key instead of creating a duplicate string in i18nexus
 - Only create a new key when no suitable existing key already maps to that value
 
-If adding fewer than 3 new strings:
+If adding exactly 1 new string:
 
 - Use `i18nexus add-string`
-- Add each key individually
 - Prefer dot-separated keys such as `meta.title` or `hero.cta`
-- If translation quality depends on extra context, use `-ai` with brief translator guidance
-- Only use `-ai` when it is genuinely helpful for correct translation
+- Add `--notes` when useful to document UI location or product context for the team
+- Only use `-ai` when translator guidance is genuinely needed for correct translation
 
-If adding 3 or more new strings in the same namespace:
+If adding more than 1 new string in the same namespace:
 
 - Create a temporary JSON file in `/tmp`
-- Put only the new base strings in that file
-- Run `i18nexus import <file> --namespace <ns>`
-- Never use `--overwrite`
+- Put only the new strings in that file as a top-level array of objects
+- Include `key` and `value` for each string
+- Add `notes` for strings that benefit from product or UI context
+- Only include `ai_instructions` on specific strings when translator guidance is genuinely needed
+- Run `i18nexus bulk-add-strings <file> --namespace <ns>`
 - Never use the `i18nexus delete-string` command
-- `i18nexus import` cannot attach AI translator instructions
-- If some strings need AI translator context, add those specific strings separately with `i18nexus add-string -ai ...` instead of relying on `import`
 
 After adding strings:
 
@@ -61,36 +67,62 @@ After adding strings:
 Single string:
 
 ```bash
-i18nexus add-string --namespace common --key meta.title --value "Northstar Studio"
+i18nexus add-string --key meta.title --value "Northstar Studio"
 ```
 
-Single string with AI translator context:
+Single string with notes:
 
 ```bash
-i18nexus add-string --namespace common --key hero.cta --value "Book a consultation" --ai "Marketing CTA button on homepage hero section."
+i18nexus add-string --key hero.cta --value "Book a consultation" --notes "Homepage hero primary CTA."
 ```
 
 Multiple strings in one namespace:
 
 ```bash
-i18nexus import /tmp/i18nexus-home.json --namespace home
+i18nexus bulk-add-strings /tmp/i18nexus-home.json --namespace home
+```
+
+Check project metadata first:
+
+```bash
+i18nexus project
 ```
 
 Example temp JSON content:
 
 ```json
-{
-  "hero.title": "Marketing support with purpose.",
-  "hero.subtitle": "Northstar Studio helps companies clarify their message.",
-  "hero.primaryCta": "Book a consultation",
-  "hero.secondaryCta": "Meet the team",
-  "meta.title": "Home"
-}
+[
+  {
+    "key": "hero.title",
+    "value": "Marketing support with purpose.",
+    "notes": "Homepage hero headline."
+  },
+  {
+    "key": "hero.subtitle",
+    "value": "Northstar Studio helps companies clarify their message.",
+    "notes": "Homepage hero supporting copy."
+  },
+  {
+    "key": "hero.primaryCta",
+    "value": "Book a consultation",
+    "notes": "Homepage hero primary CTA."
+  },
+  {
+    "key": "hero.secondaryCta",
+    "value": "Meet the team"
+  },
+  {
+    "key": "meta.title",
+    "value": "Home"
+  }
+]
 ```
 
 ## Working style
 
+- Start by checking `i18nexus project` so command usage matches the real project configuration
 - Infer the namespace and key names from the existing project structure when reasonable
+- If the project does not use namespaces, omit `--namespace` from commands
 - Keep key naming consistent with nearby strings
 - If the namespace is ambiguous, inspect existing translation keys before choosing one
 - Prefer adding source strings through i18nexus even when local files are present
