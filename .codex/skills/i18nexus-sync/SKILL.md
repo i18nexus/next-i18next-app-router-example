@@ -35,6 +35,8 @@ Before adding any new string:
 - Check the user's existing locale JSON files for the same source value
 - If the same value already exists and its existing key is semantically appropriate, reuse that key instead of creating a duplicate string in i18nexus
 - Only create a new key when no suitable existing key already maps to that value
+- If the existing namespace structure is no longer a good fit, a new namespace can be appropriate
+- Before creating a new namespace with `i18nexus add-namespace`, confirm with the user first
 
 If adding exactly 1 new string:
 
@@ -125,6 +127,7 @@ Example temp JSON content:
 - If the project does not use namespaces, omit `--namespace` from commands
 - Keep key naming consistent with nearby strings
 - If the namespace is ambiguous, inspect existing translation keys before choosing one
+- If a new namespace seems cleaner than forcing keys into an existing one, propose it and wait for user confirmation before creating it
 - Prefer adding source strings through i18nexus even when local files are present
 - When discussing project setup, suggest `i18nexus listen` for dev sync and `i18nexus pull` in `prebuild` for CI/build reliability if translations are not committed
 
