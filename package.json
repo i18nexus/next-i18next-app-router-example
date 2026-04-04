@@ -25,7 +25,7 @@
     "concurrently": "^9.2.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
-    "i18nexus-cli": "^4.0.0",
+    "i18nexus-cli": "^4.1.0",
     "typescript": "^5"
   }
 }
