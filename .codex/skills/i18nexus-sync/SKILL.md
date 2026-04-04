@@ -37,6 +37,8 @@ Before adding any new string:
 - Only create a new key when no suitable existing key already maps to that value
 - If the existing namespace structure is no longer a good fit, a new namespace can be appropriate
 - Before creating a new namespace with `i18nexus add-namespace`, confirm with the user first
+- If a new page, feature, or domain area could reasonably justify its own namespace, stop and ask the user before deciding to place those keys into an existing namespace instead
+- Do not silently choose an existing namespace just to avoid asking the user when namespace boundaries are ambiguous
 
 If adding exactly 1 new string:
 
@@ -58,7 +60,10 @@ If adding more than 1 new string in the same namespace:
 After adding strings:
 
 - Do not manually patch locale JSON files just to mirror the new keys
-- Assume `i18nexus listen` may sync changes back automatically
+- Treat `i18nexus listen` as the default dev sync path when the project already uses it
+- If local locale files need to reflect the new strings, first check whether `i18nexus listen` has already synced them before doing anything else
+- Do not run `i18nexus pull` immediately after adding strings if `listen` is already running and syncing to the expected path
+- Use `i18nexus pull` only as a fallback when local locale files did not update and the task truly requires the synced files right away
 - If needed, tell the user which keys were created
 - Recommend that the user run `i18nexus listen --path <translations-path>` during development so updates propagate automatically
 - Recommend that the user gitignore synced translation files if i18nexus is their source of truth
@@ -127,9 +132,12 @@ Example temp JSON content:
 - If the project does not use namespaces, omit `--namespace` from commands
 - Keep key naming consistent with nearby strings
 - If the namespace is ambiguous, inspect existing translation keys before choosing one
+- If the namespace is ambiguous, ask the user instead of making a unilateral namespace decision
 - If a new namespace seems cleaner than forcing keys into an existing one, propose it and wait for user confirmation before creating it
+- When adding strings for a brand-new route or feature, explicitly evaluate whether it should live in its own namespace and raise that question to the user when the answer is not obvious
 - Prefer adding source strings through i18nexus even when local files are present
 - When discussing project setup, suggest `i18nexus listen` for dev sync and `i18nexus pull` in `prebuild` for CI/build reliability if translations are not committed
+- If a repo already runs `i18nexus listen` in development, assume that process is the primary sync mechanism unless evidence shows otherwise
 
 ## Validation
 
@@ -138,3 +146,5 @@ After creating strings:
 - Report the namespace and keys added
 - If the CLI fails because of network sandboxing, rerun with escalation
 - If a sync process is expected to update locale files, say so instead of editing them directly
+- When `listen` is expected to sync local files, verify the files after a short wait before considering `pull`
+- Only use `pull` during validation when the local files are still stale and the task is blocked on having the synced artifacts immediately
